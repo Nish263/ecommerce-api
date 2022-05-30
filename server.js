@@ -16,29 +16,30 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 // mongo db connect
-
+import { dbConnect } from "./src/config/dbConfig.js";
+dbConnect();
 
 // routers
-app.get("/",(req,res)=>{
-    res.json({
-        message:"you have reached the admin api"
-    })
-
-})
+app.get("/", (req, res) => {
+  res.json({
+    message: "you have reached the admin api",
+  });
+});
 
 // error handlinhg
 
-app.use((err, req, res, next)=>{
-    console.log(err)
-    res.json({
-        status:"error",
-        message:err.message
-    })
-}
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.json({
+    status: "error",
+    message: err.message,
+  });
+});
 
 // bound app with the port to server the internet
 
-app.listen((PORT, (error)=>{
-    error ? console.log(error) : console.log("server running on ${PORT}")
-
-})
+app.listen(PORT, (error) => {
+  error
+    ? console.log(error)
+    : console.log(`server running on http://localhost:${PORT}`);
+});
