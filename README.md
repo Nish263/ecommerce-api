@@ -1,0 +1,3 @@
+#api for ecommerce admin cms
+
+here the repo for the ecommerce frontend app...
