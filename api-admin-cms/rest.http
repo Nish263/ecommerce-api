@@ -17,13 +17,23 @@ Content-Type: application/json
 {
     "fname":"Admin",
     "lname":"admin",
-    "dob":"12april1990",
-    "email":"admin123@gmail.com",
-    "password":"admin",
+    "dob":"1990-04-09",
+    "email":"minal123@gmail.com",
+    "password":"admin",ß
     "phone":"0123456789",
     "address":"sydney"
 }
 
 
+
+### post admin api
+POST http://localhost:8000/api/v1/admin/email-verification
+Content-Type: application/json
+
+{
+    
+    "email":"minal123@gmail.com",
+    "emailValidationCode":"762f5b42-0895-4263-8c0e-441987d96418"
+}
 ###patch admin api
 PATCH http://localhost:8000/api/v1/admin/
