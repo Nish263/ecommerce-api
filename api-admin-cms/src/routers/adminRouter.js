@@ -4,7 +4,7 @@ import {
   emailVerificationValidation,
   newAdminValidation,
 } from "../middlewares/joi-validation/adminValidation.js";
-import { updateAdmin } from "../models/admin/Admin.model.js";
+import { updateAdmin, insertAdmin } from "../models/admin/Admin.model.js";
 import { v4 as uuidv4 } from "uuid";
 import { sendMail } from "../../helper/emailHelper.js";
 
@@ -30,7 +30,7 @@ router.post("/", newAdminValidation, async (req, res, next) => {
     if (result?._id) {
       // create unique url and send it to user email
 
-      const url = `${process.env.ROOT_URL}/admin/verify-email/c=${result.emailValidationCode}&e=${result.email}`;
+      const url = `${process.env.ROOT_URL}/admin/verify-email/?c=${result.emailValidationCode}&e=${result.email}`;
 
       // send email to the user
       sendMail({ fname: result.fname, url: url });
@@ -57,28 +57,27 @@ router.post("/", newAdminValidation, async (req, res, next) => {
 });
 
 // email verification rouyter
-router.post(
-  "/email-verification",
-  emailVerificationValidation,
-  async (req, res) => {
-    console.log(req.body);
-    const filter = req.body;
-    const update = { status: "active" };
-    const result = await updateAdmin(filter, update);
-    console.log(result);
+router.post("/verify-email", emailVerificationValidation, async (req, res) => {
+  console.log(req.body);
+  const filter = req.body;
 
-    result?._id
-      ? res.json({
-          status: "success",
-          message: "Email verified successfully, You may login know",
-        })
-      : res.json({
-          status: "error",
-          message: "Unable to verify your email",
-        });
+  const update = { status: "active" };
+  const result = await updateAdmin(filter, update);
+
+  if (result?._id) {
+    res.json({
+      status: "success",
+      message: "Email verified successfully, You may login know",
+    });
+    await updateAdmin(filter, { emailValidationCode: "" });
+    //  send email to the user
+    return;
   }
-);
-
+  res.json({
+    status: "error",
+    message: "Invalid or expired link",
+  });
+});
 router.patch("/", (req, res) => {
   res.json({
     status: "success",

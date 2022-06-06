@@ -15,5 +15,5 @@ export const getAdmin = (filter) => {
 
 // filetre and obj must be an object
 export const updateAdmin = (filter, obj) => {
-  return AdminSchema.findByIdAndUpdate(filter, obj, { new: true });
+  return AdminSchema.findOneAndUpdate(filter, obj, { new: true });
 };
