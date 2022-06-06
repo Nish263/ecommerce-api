@@ -1,4 +1,4 @@
-import AdminSchema from "./Admin.schema";
+import AdminSchema from "./Admin.schema.js";
 
 export const insertAdmin = (obj) => {
   return AdminSchema(obj).save();
@@ -15,5 +15,5 @@ export const getAdmin = (filter) => {
 
 // filetre and obj must be an object
 export const updateAdmin = (filter, obj) => {
-  return AdminSchema.findByIdAndUpdate(filter, obj, { new: true });
+  return AdminSchema.findOneAndUpdate(filter, obj, { new: true });
 };
