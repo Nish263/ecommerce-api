@@ -2,6 +2,7 @@ import express from "express";
 import { encryptPassword } from "../../helper/bcryptHelper.js";
 import {
   emailVerificationValidation,
+  loginValidation,
   newAdminValidation,
 } from "../middlewares/joi-validation/adminValidation.js";
 import { updateAdmin, insertAdmin } from "../models/admin/Admin.model.js";
@@ -55,7 +56,6 @@ router.post("/", newAdminValidation, async (req, res, next) => {
     next(error);
   }
 });
-
 // email verification rouyter
 router.post("/verify-email", emailVerificationValidation, async (req, res) => {
   console.log(req.body);
@@ -78,11 +78,13 @@ router.post("/verify-email", emailVerificationValidation, async (req, res) => {
     message: "Invalid or expired link",
   });
 });
-router.patch("/", (req, res) => {
+
+// login user with email and password
+router.post("/login", loginValidation, (req, res) => {
   res.json({
     status: "success",
-    message: " PATCH got hiT to admin router",
+    message: "login feature not implemented yet",
   });
+  // check for the authentication
 });
-
 export default router;
