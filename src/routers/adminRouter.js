@@ -1,10 +1,15 @@
 import express from "express";
-import { encryptPassword } from "../../helper/bcryptHelper.js";
+import { encryptPassword, verifyPassword } from "../../helper/bcryptHelper.js";
 import {
   emailVerificationValidation,
+  loginValidation,
   newAdminValidation,
 } from "../middlewares/joi-validation/adminValidation.js";
-import { updateAdmin, insertAdmin } from "../models/admin/Admin.model.js";
+import {
+  updateAdmin,
+  insertAdmin,
+  getAdmin,
+} from "../models/admin/Admin.model.js";
 import { v4 as uuidv4 } from "uuid";
 import { sendMail } from "../../helper/emailHelper.js";
 
@@ -42,7 +47,7 @@ router.post("/", newAdminValidation, async (req, res, next) => {
       res.json({
         status: "error",
         message:
-          "unab le to create new admin, Please try again later or contact the admin",
+          "unable to create new admin, Please try again later or contact the admin",
         hashPassword,
       });
     }
@@ -55,7 +60,6 @@ router.post("/", newAdminValidation, async (req, res, next) => {
     next(error);
   }
 });
-
 // email verification rouyter
 router.post("/verify-email", emailVerificationValidation, async (req, res) => {
   console.log(req.body);
@@ -78,11 +82,52 @@ router.post("/verify-email", emailVerificationValidation, async (req, res) => {
     message: "Invalid or expired link",
   });
 });
-router.patch("/", (req, res) => {
-  res.json({
-    status: "success",
-    message: " PATCH got hiT to admin router",
-  });
+
+// login user with email and password
+// this feature is not yet implemented
+
+router.post("/login", loginValidation, async (req, res, next) => {
+  // query get user by email
+
+  try {
+    const { email, password } = req.body;
+    // query get user by email
+    const user = await getAdmin({ email });
+
+    if (user?._id) {
+      if (user.status === "inactive")
+        return res.json({
+          status: "error",
+          message:
+            "Your account is not active yet, Please check your email and follow the instruction to activate your account.",
+        });
+      // if user exist compare password,
+      const isMatched = verifyPassword(password, user.password);
+      console.log(isMatched);
+      if (isMatched) {
+        user.password = undefined;
+        // for now
+        res.json({
+          status: "success",
+          message: "User Logged in Successfully",
+          user,
+        });
+        return;
+      }
+
+      // if match,process for creating jwt and etc.. for future
+      // for now send login success message with user
+    }
+    res.status(401).json({
+      status: "error",
+      message: "Invalid login credential",
+    });
+  } catch (error) {
+    error.status = 500;
+    next(error);
+  }
 });
+
+// check for the authentication
 
 export default router;

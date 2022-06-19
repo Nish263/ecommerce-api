@@ -1,40 +1,44 @@
 import Joi from "joi";
+import {
+  FNAME,
+  LNAME,
+  DOB,
+  EMAIL,
+  PASSWORD,
+  PHONE,
+  ADDRESS,
+  REQUIREDSTR,
+  validationProcessor,
+} from "./constantValidation.js";
 
 export const newAdminValidation = (req, res, next) => {
   const schema = Joi.object({
-    fname: Joi.string().required().min(3).max(20),
-    lname: Joi.string().required().min(3).max(20),
-    dob: Joi.date().allow(null),
-    phone: Joi.string().required().min(10).max(15),
-    address: Joi.string().allow(null),
-    email: Joi.string().email({ minDomainSegments: 2 }).required(),
-    password: Joi.string().required(),
+    fname: FNAME,
+    lname: LNAME,
+    dob: DOB,
+    phone: PHONE,
+    address: ADDRESS,
+    email: EMAIL,
+    password: PASSWORD,
   });
 
-  const { values, error } = schema.validate(req.body);
-
-  if (error) {
-    return res.json({
-      status: "error",
-      message: error.message,
-    });
-  }
-  next();
+  validationProcessor(schema, req, res, next);
 };
 
 export const emailVerificationValidation = (req, res, next) => {
   const schema = Joi.object({
-    email: Joi.string().email({ minDomainSegments: 2 }).required(),
-    emailValidationCode: Joi.string().required(),
+    email: EMAIL,
+    emailValidationCode: REQUIREDSTR,
   });
 
-  const { error } = schema.validate(req.body);
+  validationProcessor(schema, req, res, next);
+};
 
-  if (error) {
-    return res.json({
-      status: "error",
-      message: error.message,
-    });
-  }
-  next();
+export const loginValidation = (req, res, next) => {
+  const schema = Joi.object({
+    email: EMAIL,
+    password: PASSWORD,
+  });
+
+  validationProcessor(schema, req, res, next);
 };

@@ -19,7 +19,7 @@ Content-Type: application/json
     "lname":"admin",
     "dob":"1990-04-09",
     "email":"minal123@gmail.com",
-    "password":"admin",ß
+    "password":"admin",
     "phone":"0123456789",
     "address":"sydney"
 }
@@ -35,5 +35,30 @@ Content-Type: application/json
     "email":"minal123@gmail.com",
     "emailValidationCode":"762f5b42-0895-4263-8c0e-441987d96418"
 }
-###patch admin api
-PATCH http://localhost:8000/api/v1/admin/
+
+
+
+### post admin api
+POST http://localhost:8000/api/v1/admin/login
+Content-Type: application/json
+
+{
+    
+    "email":"minal123@gmail.com",
+    "password":"1234567"
+    
+}
+
+
+
+####======category section ============
+
+### Post new category
+
+POST http://localhost:8000/api/v1/category
+Content-Type: application/json
+
+{
+    "parentCategory":"",
+    "categoryName":"laptops"
+}
