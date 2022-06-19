@@ -19,7 +19,7 @@ Content-Type: application/json
     "lname":"admin",
     "dob":"1990-04-09",
     "email":"minal123@gmail.com",
-    "password":"admin",ß
+    "password":"admin",
     "phone":"0123456789",
     "address":"sydney"
 }
