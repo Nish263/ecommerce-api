@@ -24,8 +24,6 @@ Content-Type: application/json
     "address":"sydney"
 }
 
-
-
 ### post admin api
 POST http://localhost:8000/api/v1/admin/verify-email
 Content-Type: application/json
@@ -36,7 +34,17 @@ Content-Type: application/json
     "emailValidationCode":"762f5b42-0895-4263-8c0e-441987d96418"
 }
 
+# admin update password
+###
+PATCH http://localhost:8000/api/v1/admin/update-password
+Content-Type: application/json
 
+{
+    
+    "email":"me123@gmail.com",
+   "password":"1234567",
+   "currentPassword":"123456"
+}
 
 ### post admin api
 POST http://localhost:8000/api/v1/admin/login
@@ -44,21 +52,140 @@ Content-Type: application/json
 
 {
     
-    "email":"minal123@gmail.com",
-    "password":"1234567"
+    "email":"me123@gmail.com",
+    "password":"Aa12345"
     
 }
 
+# refresh new accessJWT
+###
+get http://localhost:8000/api/v1/admin/accessjwt
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lMTIzQGdtYWlsLmNvbSIsImlhdCI6MTY1ODA0MjI1NiwiZXhwIjoxNjYwNjM0MjU2fQ.92A9lidrr4htBWsoKksEA8zadn0VwmUkkBnhBeB0fww
 
 
 ####======category section ============
 
 ### Post new category
+POST  http://localhost:8000/api/v1/category
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lMTIzQGdtYWlsLmNvbSIsImlhdCI6MTY1ODA0MjI1NiwiZXhwIjoxNjU4MDQyMzE2fQ.kWu8WSB5omDfNivtdw1s3i2Jc51Wz_p0yw_MQ9vHFWA
 
-POST http://localhost:8000/api/v1/category
+{
+    "parentCatId": "62a7d577f8937e0541cc25c1",
+    "catName": " Water filter ",
+    "status":"inactive"
+}
+
+### get all active categories
+GET http://localhost:8000/api/v1/category
+
+### update status of a categories
+PATCH http://localhost:8000/api/v1/category
 Content-Type: application/json
 
 {
-    "parentCategory":"",
-    "categoryName":"laptops"
+    "_id": "62a7d66460b037c673a694ab",
+    "status": "inactive"
 }
+
+
+
+###==========Product=====
+
+### post product
+POST http://localhost:8000/api/v1/products
+Content-Type: application/json
+
+
+{
+   
+    "name": "samsung jjjjjfdh",
+    "sku":"hhh",
+    "description":"This is latest laptop , with extensive features",
+    "qty":  100,
+    "price": 3000,
+    "salesPrice": 0,
+    "salesDate": null
+   
+   }
+
+### get all products
+
+GET http://localhost:8000/api/v1/products
+
+
+### get single product
+GET http://localhost:8000/api/v1/products/62b0fd009cbac4684ca7aeb5
+
+
+### 
+PUT http://localhost:8000/api/v1/products
+Content-Type: application/json
+
+{
+    
+    "catId":"62afa615f0ff1975c9835fd6",
+    "description":"product info goes here",
+    "name": "samsung jjjjjfdh",
+    "qty":  100,
+    "price": 3000,
+    "salesPrice": 0,
+    "salesStartDate": null,
+    "salesEndDate": null,
+    "status":"active",
+    "_id":"62b140b04d74b48b04fabcec"
+     
+}
+
+
+
+#========payment method api
+
+### 
+GET http://localhost:8000/api/v1/payment-method
+
+
+###
+POST http://localhost:8000/api/v1/payment-method
+Content-Type: application/json
+
+{
+    "name":" by debit card231",
+    "status":"active",
+    "description":"Use this payment method"
+}
+
+### update payment method
+PUT http://localhost:8000/api/v1/payment-method
+Content-Type: application/json
+
+{   "_id":"62c026f0808b0afb29d57bbe",
+    "name":" bank transfer",
+    "status":"inactive",
+    "description":"new payment method"
+}
+
+
+
+
+###
+DELETE http://localhost:8000/api/v1/payment-method/62c027352626322f4e891a06
+
+    # "accessJWT": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lMTIzQGdtYWlsLmNvbSIsImlhdCI6MTY1ODA0MjI1NiwiZXhwIjoxNjU4MDQyMzE2fQ.kWu8WSB5omDfNivtdw1s3i2Jc51Wz_p0yw_MQ9vHFWA",
+    # "refreshJWT": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1lMTIzQGdtYWlsLmNvbSIsImlhdCI6MTY1ODA0MjI1NiwiZXhwIjoxNjYwNjM0MjU2fQ.92A9lidrr4htBWsoKksEA8zadn0VwmUkkBnhBeB0fww"
+
+
+
+
+# ===========customer apis
+
+###get 
+GET http://localhost:8000/api/v1/customers
+
+# ===========review apis
+###get 
+GET http://localhost:8000/api/v1/reviews
+
+# ===========order apis
+###get 
+GET http://localhost:8000/api/v1/orders

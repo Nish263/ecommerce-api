@@ -8,7 +8,8 @@ import {
   PHONE,
   ADDRESS,
   REQUIREDSTR,
-  validationProcessor,
+  validator,
+  SHORTSTR,
 } from "./constantValidation.js";
 
 export const newAdminValidation = (req, res, next) => {
@@ -22,7 +23,21 @@ export const newAdminValidation = (req, res, next) => {
     password: PASSWORD,
   });
 
-  validationProcessor(schema, req, res, next);
+  validator(schema, req, res, next);
+};
+export const updateAdminValidation = (req, res, next) => {
+  const schema = Joi.object({
+    _id: SHORTSTR,
+    fname: FNAME,
+    lname: LNAME,
+    dob: DOB,
+    phone: PHONE,
+    address: ADDRESS,
+    email: EMAIL,
+    password: PASSWORD,
+  });
+
+  validator(schema, req, res, next);
 };
 
 export const emailVerificationValidation = (req, res, next) => {
@@ -31,7 +46,7 @@ export const emailVerificationValidation = (req, res, next) => {
     emailValidationCode: REQUIREDSTR,
   });
 
-  validationProcessor(schema, req, res, next);
+  validator(schema, req, res, next);
 };
 
 export const loginValidation = (req, res, next) => {
@@ -40,5 +55,14 @@ export const loginValidation = (req, res, next) => {
     password: PASSWORD,
   });
 
-  validationProcessor(schema, req, res, next);
+  validator(schema, req, res, next);
+};
+export const updatePasswordalidation = (req, res, next) => {
+  const schema = Joi.object({
+    email: EMAIL,
+    password: PASSWORD,
+    currentPassword: PASSWORD,
+  });
+
+  validator(schema, req, res, next);
 };
